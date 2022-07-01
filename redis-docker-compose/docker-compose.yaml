@@ -1,0 +1,138 @@
+version: '3.9'
+services:
+  redis-cluster:
+    image: 'redis:7.0.2-alpine'
+#    command: >
+#      sh -c
+#      "echo 🏁🏁🏁🏁🏁🏁🏁🏁 Cluster setup begins 🏁🏁🏁🏁🏁🏁🏁🏁
+#      && redis-cli --cluster create 172.20.0.31:6379 172.20.0.32:6379 172.20.0.33:6379 172.20.0.34:6379 172.20.0.35:6379 172.20.0.36:6379 --cluster-replicas 1 --cluster-yes
+#      && sleep 10
+#      && echo 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Cluster setup ready 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀"
+#    command: echo basliyoruzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz;
+#      redis-cli --cluster create 172.20.0.31:6379 172.20.0.32:6379 172.20.0.33:6379 172.20.0.34:6379 172.20.0.35:6379 172.20.0.36:6379 --cluster-replicas 1 --cluster-yes;
+#      sleep 60;
+#      echo bittiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii;
+    command: sh -c "echo 🏁🏁🏁🏁🏁🏁🏁🏁 Cluster setup begins 🏁🏁🏁🏁🏁🏁🏁🏁;
+      redis-cli --cluster create 172.20.0.31:6379 172.20.0.32:6379 172.20.0.33:6379 172.20.0.34:6379 172.20.0.35:6379 172.20.0.36:6379 --cluster-replicas 1 --cluster-yes;
+      sleep 10;
+      echo 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Cluster setup ready 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀"
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.30
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
+  redis-node-1:
+    image: 'redis:7.0.2-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6373:6379'
+    volumes:
+      - redis-node-1-data:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.31
+  redis-node-2:
+    image: 'redis:7.0.2-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6374:6379'
+    volumes:
+      - redis-node-2-data:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.32
+  redis-node-3:
+    image: 'redis:7.0.2-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6375:6379'
+    volumes:
+      - redis-node-3-data:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.33
+  redis-node-4:
+    image: 'redis:7.0.2-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6376:6379'
+    volumes:
+      - redis-node-4-data:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.34
+  redis-node-5:
+    image: 'redis:7.0.2-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6377:6379'
+    volumes:
+      - redis-node-5-data:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.35
+  redis-node-6:
+    image: 'redis:7.0.2-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6378:6379'
+    volumes:
+      - redis-node-6-data:/var/lib/redis
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.36
+volumes:
+  db-data:
+  redis-node-1-data:
+  redis-node-2-data:
+  redis-node-3-data:
+  redis-node-4-data:
+  redis-node-5-data:
+  redis-node-6-data:
+networks:
+  app_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
