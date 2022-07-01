@@ -1,0 +1,21 @@
+#@no-log
+POST http://localhost:7777/redis/save
+Content-Type: application/json
+
+{
+  "name": "Hakan",
+  "type": "tt",
+  "data": "data"
+}
+
+###
+#@no-log
+GET http://localhost:7777/redis/read/type/tt
+Accept: application/json
+
+###
+#@no-log
+GET http://localhost:7777/redis/read/id/42838591-84dc-45f7-a408-9765c4b83d4c
+Accept: application/json
+
+###
