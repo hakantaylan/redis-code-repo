@@ -32,6 +32,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<artifactId>spring-data-redis-example-utils</artifactId>
+			<groupId>example.springdata</groupId>
+			<version>2.0.0.BUILD-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
